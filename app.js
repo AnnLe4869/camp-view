@@ -51,10 +51,13 @@ passport.deserializeUser(User.deserializeUser());
 
 (async () => {
   try {
-    mongoose.connect("mongodb://localhost:27017/yelp_camp", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
+    mongoose.connect(
+      "mongodb+srv://yelp-user:23456789@yelpcamp-wlmtx.mongodb.net/yelp-camp?retryWrites=true&w=majority",
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }
+    );
     mongoose.connection.on("error", err => console.error(err));
     app.use("/", authRoute);
     app.use("/campgrounds", campgroundRoute);
