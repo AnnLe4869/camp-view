@@ -52,8 +52,7 @@ passport.deserializeUser(User.deserializeUser());
 (async () => {
   try {
     mongoose.connect(
-      process.env.DATABASE_DEV_URL ||
-        "mongodb+srv://yelp-user:23456789@yelpcamp-wlmtx.mongodb.net/yelp-camp?retryWrites=true&w=majority",
+      process.env.DATABASE_DEV_URL || process.env.DATABASE_PROD_URL,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true
