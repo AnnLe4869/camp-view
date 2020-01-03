@@ -8,6 +8,7 @@ const express = require("express"),
   methodOverride = require("method-override"),
   flash = require("connect-flash"),
   helmet = require("helmet");
+require("dotenv").config();
 
 //const seedDB = require("./seed");
 const User = require("./models/user");
