@@ -8,8 +8,8 @@ router.get("/", (req, res) => {
 });
 
 // Sign up routes
-router.get("/signup", (req, res) => res.render("users/new"));
-router.post("/signup", (req, res) => {
+router.get("/register", (req, res) => res.render("users/register"));
+router.post("/register", (req, res) => {
   User.register(
     new User({ username: req.body.username }),
     req.body.password,
@@ -17,10 +17,10 @@ router.post("/signup", (req, res) => {
       console.log(user);
       if (err) {
         req.flash("error", err.message);
-        return res.redirect("/signup");
+        return res.redirect("/register");
       }
       passport.authenticate("local")(req, res, () => {
-        req.flash("success", "Welcome to YelpCamp" + user.username);
+        req.flash("success", "Welcome to YelpCamp " + user.username);
         res.redirect("/campgrounds");
       });
     }
@@ -28,17 +28,17 @@ router.post("/signup", (req, res) => {
 });
 
 // Sign in routes
-router.get("/signin", (req, res) => res.render("users/signin"));
+router.get("/login", (req, res) => res.render("users/login"));
 router.post(
-  "/signin",
+  "/login",
   passport.authenticate("local", {
-    failureRedirect: "/signin",
+    failureRedirect: "/login",
     successRedirect: "/campgrounds"
   })
 );
 
 // Sign out route
-router.get("/signout", (req, res) => {
+router.get("/logout", (req, res) => {
   req.flash("success", "Logged you out");
   req.logout();
   res.redirect("/campgrounds");

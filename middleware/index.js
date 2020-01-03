@@ -6,7 +6,7 @@ function isSignedIn(req, res, next) {
     return next();
   } else {
     req.flash("error", "You need to log in to continue");
-    return res.redirect(`/signin`);
+    return res.redirect(`/login`);
   }
 }
 
@@ -49,7 +49,7 @@ function checkCommentOwnership(req, res, next) {
       });
   } else {
     req.flash("error", "You need to log in to continue");
-    return res.redirect("/signin");
+    return res.redirect("/login");
   }
 }
 
