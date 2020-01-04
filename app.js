@@ -54,8 +54,8 @@ passport.deserializeUser(User.deserializeUser());
     mongoose.connect(
       process.env.DATABASE_DEV_URL || process.env.DATABASE_PROD_URL,
       {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
+        useNewUrlParser: true
+        //useUnifiedTopology: true
       }
     );
     mongoose.connection.on("error", err => console.error(err));
