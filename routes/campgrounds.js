@@ -28,13 +28,16 @@ router.post("/", isSignedIn, async (req, res) => {
   try {
     const { name, image, description, price, location } = req.body;
     const [{ latitude, longitude }] = await geocoder.geocode(location);
-    //const correctLocation = await geocoder.reverse({ latitude, longitude });
+    const [{ formattedAddress }] = await geocoder.reverse({
+      lat: latitude,
+      lon: longitude
+    });
     await Campground.create({
       name,
       image,
       price,
       description,
-      location,
+      location: formattedAddress,
       latitude,
       longitude,
       author: { id: req.user._id, username: req.user.username }
@@ -85,19 +88,22 @@ router.put("/:id", checkCampgroundOwnership, async (req, res) => {
   try {
     const { name, image, description, price, location } = req.body;
     const [{ latitude, longitude }] = await geocoder.geocode(location);
-    //const correctLocation = await geocoder.reverse({ latitude, longitude });
+    const [{ formattedAddress }] = await geocoder.reverse({
+      lat: latitude,
+      lon: longitude
+    });
     await Campground.findByIdAndUpdate(req.params.id, {
       name,
       image,
       price,
       description,
-      location,
+      location: formattedAddress,
       latitude,
       longitude
     });
-    //console.log(correctLocation);
     res.redirect(`/campgrounds/${req.params.id}`);
   } catch (err) {
+    console.log(err);
     req.flash("err", "You are trying to access a nonexistent campground");
     res.redirect("/campgrounds");
   }
