@@ -33,6 +33,7 @@ router.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
+    failureFlash: "Username or password is wrong or did not exist",
     successRedirect: "/campgrounds"
   })
 );
