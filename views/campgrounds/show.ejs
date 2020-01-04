@@ -36,8 +36,9 @@
             <button class="btn btn-danger">Remove</button>
           </form>
           <% } %>
-          <p class="card-text font-weight-bold font-italic text-right">
-            Submitted by <%= campground.author.username %>
+          <p class="card-text font-weight-bold font-italic">
+            Submitted by <%= campground.author.username %>, <%=
+            moment(campground.createdAt).fromNow() %>
           </p>
         </div>
         <ul
@@ -55,7 +56,9 @@
               <strong class="d-inline-block"
                 ><%= comment.author.username %></strong
               >
-              <span class="d-inline-block float-right">10 days ago</span>
+              <span class="d-inline-block float-right"
+                ><%= moment(comment.createdAt).fromNow() %></span
+              >
               <span class="d-block my-2"><%=comment.text %></span>
               <% if(user && comment.author.id.toString() ===
               user._id.toString()){ %>
