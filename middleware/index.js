@@ -45,7 +45,7 @@ function checkCommentOwnership(req, res, next) {
       })
       .catch(() => {
         res.redirect("back");
-        req.flash("You are trying to edit a nonexistent comment");
+        req.flash("error", "You are trying to edit a nonexistent comment");
       });
   } else {
     req.flash("error", "You need to log in to continue");

@@ -1,23 +1,27 @@
 const express = require("express"),
   mongoose = require("mongoose"),
-  //morgan = require("morgan"),
   session = require("express-session"),
   passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy,
   methodOverride = require("method-override"),
   flash = require("connect-flash"),
+  moment = require("moment"),
   helmet = require("helmet");
 require("dotenv").config();
 
+const app = express();
+if (process.env.NODE_ENV) {
+  const morgan = require("morgan");
+  app.use(morgan("dev"));
+}
 //const seedDB = require("./seed");
 const User = require("./models/user");
 const authRoute = require("./routes/index");
 const commentRoute = require("./routes/comments");
 const campgroundRoute = require("./routes/campgrounds");
-//seedDB();
-const app = express();
 app.set("view engine", "ejs");
-//app.use(morgan("dev"));
+app.locals.moment = moment;
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(flash());
