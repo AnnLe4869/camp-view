@@ -21,8 +21,8 @@
             $<%= campground.price %>
           </h6>
           <p class="card-text"><%= campground.description %></p>
-          <% if(user && campground.author.id.toString() ===
-          user._id.toString()){ %>
+          <% if(user && campground.author.id.toString() === user._id.toString()
+          || user && user.isAdmin){ %>
           <a
             href="/campgrounds/<%= campground._id %>/edit"
             class="btn btn-warning"
@@ -60,8 +60,8 @@
                 ><%= moment(comment.createdAt).fromNow() %></span
               >
               <span class="d-block my-2"><%=comment.text %></span>
-              <% if(user && comment.author.id.toString() ===
-              user._id.toString()){ %>
+              <% if(user && comment.author.id.toString() === user._id.toString()
+              || user && user.isAdmin){ %>
               <span>
                 <a
                   class="btn btn-warning btn-sm"

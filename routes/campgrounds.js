@@ -74,7 +74,10 @@ router.get("/:id", (req, res) => {
 router.get("/:id/edit", checkCampgroundOwnership, async (req, res) => {
   try {
     const foundCampground = await Campground.findById(req.params.id);
-    if (req.user._id.toString() == foundCampground.author.id.toString()) {
+    if (
+      req.user._id.toString() == foundCampground.author.id.toString() ||
+      req.user.isAdmin
+    ) {
       res.render("campgrounds/edit", { campground: foundCampground });
     } else {
       res.redirect("back");

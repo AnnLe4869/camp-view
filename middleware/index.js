@@ -14,7 +14,10 @@ function checkCampgroundOwnership(req, res, next) {
   if (req.isAuthenticated()) {
     Campground.findById(req.params.id)
       .then(foundCampground => {
-        if (req.user._id.toString() == foundCampground.author.id.toString()) {
+        if (
+          req.user._id.toString() == foundCampground.author.id.toString() ||
+          req.user.isAdmin
+        ) {
           return next();
         } else {
           req.flash("error", "You don't have permission to do this");
@@ -36,7 +39,10 @@ function checkCommentOwnership(req, res, next) {
   if (req.isAuthenticated()) {
     Comment.findById(req.params.commentId)
       .then(foundComment => {
-        if (foundComment.author.id.toString() === req.user._id.toString()) {
+        if (
+          foundComment.author.id.toString() === req.user._id.toString() ||
+          req.user.isAdmin
+        ) {
           next();
         } else {
           req.flash("error", "You don't have permission to do this");
