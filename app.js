@@ -1,6 +1,5 @@
 const express = require("express"),
   mongoose = require("mongoose"),
-  chalk = require("chalk"),
   morgan = require("morgan"),
   session = require("express-session"),
   passport = require("passport"),
@@ -69,5 +68,5 @@ passport.deserializeUser(User.deserializeUser());
 })();
 
 app.listen(process.env.PORT || 3000, () =>
-  console.log(chalk.green("The YelpCamp server has started"))
+  console.log("The YelpCamp server has started")
 );
