@@ -1,6 +1,6 @@
 const express = require("express"),
   mongoose = require("mongoose"),
-  morgan = require("morgan"),
+  //morgan = require("morgan"),
   session = require("express-session"),
   passport = require("passport"),
   LocalStrategy = require("passport-local").Strategy,
@@ -17,7 +17,7 @@ const campgroundRoute = require("./routes/campgrounds");
 //seedDB();
 const app = express();
 app.set("view engine", "ejs");
-app.use(morgan("dev"));
+//app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(flash());
