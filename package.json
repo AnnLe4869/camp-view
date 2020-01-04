@@ -24,8 +24,7 @@
     "nodemon": "^2.0.2"
   },
   "scripts": {
-    "start:dev": "nodemon app.js",
-    "start:server": "mongod --dbpath=data",
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

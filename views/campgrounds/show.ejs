@@ -9,6 +9,7 @@
         <li class="list-group-item">Info 1</li>
         <li class="list-group-item">Info 1</li>
       </ul>
+      <div id="map" style="width: 100%; height: 30%"></div>
     </div>
     <div class="col-md-9">
       <div class="card">
@@ -82,5 +83,37 @@
     </div>
   </div>
 </div>
+<script>
+  function initMap() {
+    const lat = <%= campground.lat %>;
+    const lng = <%= campground.lng %>;
+    const center = {lat: lat, lng: lng };
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    const contentString = `
+      <strong><%= campground.name %><br />
+      <%= campground.location %></strong>
+      <p><%= campground.description %></p>
+    `
+    const infoWindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    const marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infoWindow.open(map, marker);
+    });
+  }
+</script>
+<script
+  async
+  defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8vmgNaDIsXu7J1oJwF5GbO5RY0N3_i8&callback=initMap"
+></script>
 
 <% include ../partials/footer %>
