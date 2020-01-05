@@ -11,10 +11,15 @@ router.get("/", (req, res) => {
 // Sign up routes
 router.get("/register", (req, res) => res.render("users/register"));
 router.post("/register", (req, res) => {
+  const { username, firstName, lastName, avatar, email, adminCode } = req.body;
   User.register(
     new User({
-      username: req.body.username,
-      isAdmin: req.body.adminCode === process.env.ADMIN_CODE
+      username,
+      firstName,
+      lastName,
+      avatar,
+      email,
+      isAdmin: adminCode === process.env.ADMIN_CODE
     }),
     req.body.password,
     (err, user) => {
