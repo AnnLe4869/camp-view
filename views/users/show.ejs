@@ -1,0 +1,60 @@
+<% include ../partials/header %>
+
+<div class="container p-5">
+  <div class="row">
+    <h1 class="col-12">User profile</h1>
+
+    <div class="col-lg-3 col-sm-12">
+      <img
+        src="https://i.pximg.net/img-original/img/2020/01/03/00/00/01/78673641_p0.png"
+        style="width: 100%;"
+      />
+    </div>
+    <div class="col-lg-9 col-sm-12">
+      <div id="fullName">
+        <h3>Full name</h3>
+        <% if(user.firstName && user.lastName){ %>
+        <p><%= user.firstName + ' ' + user.lastName %></p>
+        <% }else{ %>
+        <p class="font-weight-light">Unknown</p>
+        <% } %>
+      </div>
+      <div id="email">
+        <h3>Email</h3>
+        <% if(user.email ){ %>
+        <p><%= user.email%></p>
+        <% }else{ %>
+        <p class="font-weight-light">Unknown</p>
+        <% } %>
+      </div>
+      <div id="role">
+        <h3>Role</h3>
+        <% if(user.isAdmin ){ %>
+        <p>Admin</p>
+        <% }else{ %>
+        <p class="font-weight-light">User</p>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="col-12" id="posts">
+      <h2>User posts</h2>
+      <% if(campgrounds.length === 0){ %> No campgrounds available <% }else { %>
+      <% campgrounds.forEach(campground => { %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= campground.name %></h5>
+          <p class="card-text">
+            <%= campground.description.substr(0, 60).substr(0,
+            Math.min(campground.description.substr(0, 60).length,
+            campground.description.substr(0, 60).lastIndexOf(" "))) %>
+            <a href="/campgrounds/<%= campground._id %>"> >>>Full post </a>
+          </p>
+        </div>
+      </div>
+      <% }) %> <% } %>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

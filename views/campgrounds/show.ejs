@@ -37,8 +37,10 @@
           </form>
           <% } %>
           <p class="card-text font-weight-bold font-italic">
-            Submitted by <%= campground.author.username %>, <%=
-            moment(campground.createdAt).fromNow() %>
+            Submitted by
+            <a href="/users/<%= campground.author.id %>"
+              ><%= campground.author.username %></a
+            >, <%= moment(campground.createdAt).fromNow() %>
           </p>
         </div>
         <ul

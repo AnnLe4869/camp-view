@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/user");
+const Campground = require("../models/campground");
 const passport = require("passport");
 require("dotenv").config();
 
@@ -52,6 +53,26 @@ router.get("/logout", (req, res) => {
   req.flash("success", "Logged you out");
   req.logout();
   res.redirect("/campgrounds");
+});
+
+router.get("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      req.flash("error", "User is not existed");
+      return res.redirect("back");
+    }
+    const campgrounds = await Campground.find({
+      author: {
+        id: user._id,
+        username: user.username
+      }
+    });
+    res.render("users/show", { user, campgrounds });
+  } catch (err) {
+    req.flash("error", "Something went wrong");
+    return res.redirect("back");
+  }
 });
 
 module.exports = router;
