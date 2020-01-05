@@ -13,23 +13,23 @@
     <div class="col-lg-9 col-sm-12">
       <div id="fullName">
         <h3>Full name</h3>
-        <% if(user.firstName && user.lastName){ %>
-        <p><%= user.firstName + ' ' + user.lastName %></p>
+        <% if(currentUser.firstName && currentUser.lastName){ %>
+        <p><%= currentUser.firstName + ' ' + currentUser.lastName %></p>
         <% }else{ %>
         <p class="font-weight-light">Unknown</p>
         <% } %>
       </div>
       <div id="email">
         <h3>Email</h3>
-        <% if(user.email ){ %>
-        <p><%= user.email%></p>
+        <% if(currentUser.email ){ %>
+        <p><%= currentUser.email%></p>
         <% }else{ %>
         <p class="font-weight-light">Unknown</p>
         <% } %>
       </div>
       <div id="role">
         <h3>Role</h3>
-        <% if(user.isAdmin ){ %>
+        <% if(currentUser.isAdmin ){ %>
         <p>Admin</p>
         <% }else{ %>
         <p class="font-weight-light">User</p>
@@ -55,9 +55,9 @@
               <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-12">
                 <h5 class="card-title"><%= campground.name %></h5>
                 <p class="card-text">
-                  <%= campground.description.substr(0, 60).substr(0,
-                  Math.min(campground.description.substr(0, 60).length,
-                  campground.description.substr(0, 60).lastIndexOf(" "))) %>
+                  <%= campground.description.substr(0, 120).substr(0,
+                  Math.min(campground.description.substr(0, 120).length,
+                  campground.description.substr(0, 120).lastIndexOf(" "))) %>
                   <a href="/campgrounds/<%= campground._id %>">
                     >>>Full post
                   </a>

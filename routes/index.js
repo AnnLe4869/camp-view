@@ -55,6 +55,7 @@ router.get("/logout", (req, res) => {
   res.redirect("/campgrounds");
 });
 
+// User profile route
 router.get("/users/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -68,7 +69,7 @@ router.get("/users/:id", async (req, res) => {
         username: user.username
       }
     });
-    res.render("users/show", { user, campgrounds });
+    res.render("users/show", { currentUser: user, campgrounds });
   } catch (err) {
     req.flash("error", "Something went wrong");
     return res.redirect("back");

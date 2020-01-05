@@ -21,6 +21,12 @@
             $<%= campground.price %>
           </h6>
           <p class="card-text"><%= campground.description %></p>
+          <p class="card-text font-weight-bold font-italic">
+            Submitted by
+            <a href="/users/<%= campground.author.id %>"
+              ><%= campground.author.username %></a
+            >, <%= moment(campground.createdAt).fromNow() %>
+          </p>
           <% if(user && campground.author.id.toString() === user._id.toString()
           || user && user.isAdmin){ %>
           <a
@@ -36,12 +42,6 @@
             <button class="btn btn-danger">Remove</button>
           </form>
           <% } %>
-          <p class="card-text font-weight-bold font-italic">
-            Submitted by
-            <a href="/users/<%= campground.author.id %>"
-              ><%= campground.author.username %></a
-            >, <%= moment(campground.createdAt).fromNow() %>
-          </p>
         </div>
         <ul
           class="list-group list-group-flush pt-3"
