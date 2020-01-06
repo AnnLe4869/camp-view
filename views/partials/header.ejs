@@ -54,23 +54,28 @@
             <a href="/campgrounds" class="nav-link">Home</a>
           </li>
         </ul>
+        
         <ul class="navbar-nav ml-auto">
+          <form class="form-inline mr-3 d-lg-inline-block d-sm-none d-md-none d-xs-none d-none">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          </form>
           <% if (!user) {%> 
-          <li class="nav-item">
-            <a href="/login" class="nav-link">Login</a>
-          </li>
-          <li class="nav-item">
-            <a href="/register" class="nav-link">Sign up</a>
-          </li>
+            <li class="nav-item">
+              <a href="/login" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item">
+              <a href="/register" class="nav-link">Sign up</a>
+            </li>
           <% } else { %> 
-          <li class="nav-item">
-            <a href="/#" class="nav-link">Signed in as <%= user.username %></a>
-          </li>
-          <li class="nav-item">
-            <a href="/logout" class="nav-link">Logout</a>
-          </li>
+            <li class="nav-item">
+              <a href="/#" class="nav-link">Signed in as <%= user.username %></a>
+            </li>
+            <li class="nav-item">
+              <a href="/logout" class="nav-link">Logout</a>
+            </li>
           <% } %>
         </ul>
+        
       </div>
     </nav>
     <div class="container">
