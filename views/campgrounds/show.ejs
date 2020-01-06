@@ -1,5 +1,4 @@
-<% include ../partials/header %>
-
+<%- include("../partials/header") %>
 <div class="container mt-3">
   <div class="row">
     <div class="col-md-3">
@@ -88,36 +87,6 @@
     </div>
   </div>
 </div>
-<script>
-  function initMap() {
-    const lat = <%= campground.latitude %>;
-    const lng = <%= campground.longitude %>;
-    const center = {lat: lat, lng: lng };
-    const map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 8,
-        center: center,
-        scrollwheel: false
-    });
-    const contentString = `
-      <strong><%= campground.name %>,<br /></strong>
-      <%= campground.location %>
-    `
-    const infoWindow = new google.maps.InfoWindow({
-      content: contentString
-    });
-    const marker = new google.maps.Marker({
-        position: center,
-        map: map
-    });
-    marker.addListener('click', function() {
-      infoWindow.open(map, marker);
-    });
-  }
-</script>
-<script
-  async
-  defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_8vmgNaDIsXu7J1oJwF5GbO5RY0N3_i8&callback=initMap"
-></script>
 
-<% include ../partials/footer %>
+<%- include ('../script/map', {campground: campground}) %> 
+<%- include("../partials/footer") %>
