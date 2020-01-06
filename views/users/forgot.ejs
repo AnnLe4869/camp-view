@@ -1,0 +1,26 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <div class="mw-100 container">
+    <div class="row justify-content-center">
+      <h1 class="text-center col-12">Forgot password</h1>
+      <form action="/forgot" method="POST" class="col-xs-12 col-md-8 my-3">
+        <div class="form-group">
+          <label for="email">Pleas enter your email address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Email"
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Reset Password</button>
+        <a href="#" class="btn btn-link">other methods</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

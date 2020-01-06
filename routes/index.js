@@ -1,8 +1,11 @@
 const router = require("express").Router();
+const crypto = require("crypto");
+const sgMail = require("@sendgrid/mail");
 const User = require("../models/user");
 const Campground = require("../models/campground");
 const passport = require("passport");
 require("dotenv").config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Root route
 router.get("/", (req, res) => {
@@ -12,7 +15,15 @@ router.get("/", (req, res) => {
 // Sign up routes
 router.get("/register", (req, res) => res.render("users/register"));
 router.post("/register", (req, res) => {
-  const { username, firstName, lastName, avatar, email, adminCode } = req.body;
+  const {
+    username,
+    firstName,
+    lastName,
+    avatar,
+    email,
+    adminCode,
+    password
+  } = req.body;
   User.register(
     new User({
       username,
@@ -22,7 +33,7 @@ router.post("/register", (req, res) => {
       email,
       isAdmin: adminCode === process.env.ADMIN_CODE
     }),
-    req.body.password,
+    password,
     (err, user) => {
       console.log(user);
       if (err) {
@@ -73,6 +84,45 @@ router.get("/users/:id", async (req, res) => {
   } catch (err) {
     req.flash("error", "Something went wrong");
     return res.redirect("back");
+  }
+});
+
+// Get password reset
+router.get("/forgot", (req, res) => {
+  const msg = {
+    to: "kunquan2345@gmail.com",
+    from: "nadom45981@mailon.ws",
+    subject: "Sending with Twilio SendGrid is Fun",
+    text: "and easy to do anywhere, even with Node.js",
+    html: "<strong>and easy to do anywhere, even with Node.js</strong>"
+  };
+  sgMail.send(msg);
+  res.render("users/forgot");
+});
+router.post("/forgot", async (req, res) => {
+  try {
+    const foundUser = await User.findOne({
+      email: req.body.email
+    });
+    if (!foundUser) {
+      req.flash("error", "No account with that email address exists.");
+      return res.redirect("/forgot");
+    }
+
+    // Create user token
+    const token = crypto.randomBytes(50).toString("hex");
+    foundUser.resetPasswordToken = token;
+    foundUser.resetPasswordExpire = Date.now() + 3600000;
+    await foundUser.save();
+
+    // Send email to user
+
+    // Display flash message if success
+    req.flash("success", `An email has been sent to ${req.body.email}`);
+    res.redirect("/forgot");
+  } catch (err) {
+    req.flash("error", "Something went wrong");
+    return res.redirect("/forgot");
   }
 });
 
