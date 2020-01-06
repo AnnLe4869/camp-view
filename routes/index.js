@@ -89,14 +89,6 @@ router.get("/users/:id", async (req, res) => {
 
 // Get password reset
 router.get("/forgot", (req, res) => {
-  const msg = {
-    to: "kunquan2345@gmail.com",
-    from: "nadom45981@mailon.ws",
-    subject: "Sending with Twilio SendGrid is Fun",
-    text: "and easy to do anywhere, even with Node.js",
-    html: "<strong>and easy to do anywhere, even with Node.js</strong>"
-  };
-  sgMail.send(msg);
   res.render("users/forgot");
 });
 router.post("/forgot", async (req, res) => {
@@ -116,11 +108,21 @@ router.post("/forgot", async (req, res) => {
     await foundUser.save();
 
     // Send email to user
-
+    const message = {
+      to: req.body.email,
+      from: "nadom45981@mailon.ws",
+      subject: "Node.js Password Reset",
+      html: ` <p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>
+        <p>Please click on the following link, or paste this into your browser to complete the process: </p>
+        <p>http://${req.headers.host}/reset/${token} </p>
+        <p>If you did not request this, please ignore this email and your password will remain unchanged. </p>`
+    };
+    await sgMail.send(message);
     // Display flash message if success
     req.flash("success", `An email has been sent to ${req.body.email}`);
     res.redirect("/forgot");
   } catch (err) {
+    console.log(err);
     req.flash("error", "Something went wrong");
     return res.redirect("/forgot");
   }
