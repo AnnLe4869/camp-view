@@ -169,10 +169,21 @@ router.post("/reset/:token", async (req, res) => {
     }
     if (req.body.password === req.body.confirm) {
       await user.setPassword(req.body.password);
-      user.save();
+      await user.save();
     } else {
       res.redirect(`/reset/${req.params.token}`);
     }
+    await sgMail.send({
+      to: user.email,
+      from: "nadom45981@mailon.ws",
+      subject: "Successfully Password Reset",
+      html: ` <p>Your password have been reset successfully</p>
+        <p>If you didn't change the password, please go to the website to authenticate again.
+           <strong> Someone may have steal your account </strong>
+        </p>
+        <p>Please click on the following link, or paste this into your browser to go back to the website</p>
+        <p>http://${req.headers.host}/campgrounds </p> `
+    });
     return res.redirect("/login");
   } catch (err) {
     req.flash("error", "Something went wrong");
