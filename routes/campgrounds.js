@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const NodeGeocoder = require("node-geocoder");
+const Fuse = require("fuse.js");
 require("dotenv").config();
 
 const Campground = require("../models/campground");
@@ -13,10 +14,25 @@ const options = {
 const geocoder = NodeGeocoder(options);
 
 // Show campground route
-router.get("/", (req, res) => {
-  Campground.find({})
-    .then(campGrounds => res.render("campgrounds/index", { campGrounds }))
-    .catch(err => console.error(err));
+router.get("/", async (req, res) => {
+  try {
+    const campgrounds = await Campground.find({});
+    const searchOption = {
+      shouldSort: true,
+      threshold: 0.2,
+      keys: ["name", "description", "location", "author.username"]
+    };
+    const fuse = new Fuse(campgrounds, searchOption);
+    res.render("campgrounds/index", {
+      campGrounds:
+        /^\s*$/.test(req.query.search) || !req.query.search
+          ? campgrounds
+          : fuse.search(req.query.search)
+    });
+  } catch (err) {
+    req.flash("error", "Something went wrong. Please try again");
+    res.redirect("/");
+  }
 });
 
 // NEW - Show form to create new campground
