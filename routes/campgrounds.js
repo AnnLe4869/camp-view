@@ -1,51 +1,13 @@
 const router = require("express").Router();
-const NodeGeocoder = require("node-geocoder");
 const Fuse = require("fuse.js");
-const cloudinary = require("cloudinary").v2;
-const multer = require("multer");
-const util = require("util");
 const fs = require("fs");
-require("dotenv").config();
 
 const Campground = require("../models/campground");
 const { isSignedIn, checkCampgroundOwnership } = require("../middleware/index");
-
-/**
- * CONFIGURATION
- */
-// Configuration for Google Map
-const options = {
-  provider: "google",
-  apiKey: process.env.GEOCODER_API_KEY,
-  formatter: null
-};
-const geocoder = NodeGeocoder(options);
-// Configuration for Cloudinary
-cloudinary.config({
-  cloud_name: "ann4567",
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
-// Configuration for Multer
-const storage = multer.diskStorage({
-  filename: (req, file, callback) =>
-    callback(null, `${Date.now()}.${file.originalname}`),
-  destination: (req, file, callback) => {
-    callback(null, "./temp/");
-  }
-});
-const limits = { fileSize: 8 * 1024 * 1024 };
-const fileFilter = (req, file, callback) => {
-  const acceptedFiles = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
-  if (acceptedFiles.includes(file.mimetype)) {
-    callback(null, true);
-  } else {
-    callback(new Error("Only image is allowed"), false);
-  }
-};
-const upload = multer({ storage, limits, fileFilter });
-const cloudUpload = util.promisify(cloudinary.uploader.upload);
-const unlink = util.promisify(fs.unlink);
+const upload = require("../config/multer");
+const cloudUpload = require("../config/cloudinary");
+const geocoder = require("../config/google-map");
+const unlink = require("util").promisify(fs.unlink);
 /**
  * ROUTES HANDLER
  */
