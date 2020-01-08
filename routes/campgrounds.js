@@ -1,17 +1,46 @@
 const router = require("express").Router();
 const NodeGeocoder = require("node-geocoder");
 const Fuse = require("fuse.js");
+const cloudinary = require("cloudinary").v2;
+const multer = require("multer");
 require("dotenv").config();
 
 const Campground = require("../models/campground");
 const { isSignedIn, checkCampgroundOwnership } = require("../middleware/index");
 
+/**
+ * CONFIGURATION
+ */
+// Configuration for Google Map
 const options = {
   provider: "google",
   apiKey: process.env.GEOCODER_API_KEY,
   formatter: null
 };
 const geocoder = NodeGeocoder(options);
+// Configuration for Cloudinary
+cloudinary.config({
+  cloud_name: "ann4567",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+// Configuration for Multer
+const storage = multer.diskStorage({
+  filename: (req, file, callback) =>
+    callback(null, `${file.originalname}-${Date.now()}.${file.mimetype}`)
+});
+const limits = { fileSize: 8 * 1024 * 1024 };
+const fileFilter = (req, file, callback) => {
+  if (file.mimetype === "png" || "jpeg" || "gif" || "jpg") {
+    callback(null, true);
+  } else {
+    callback(new Error("Only image is allowed"), false);
+  }
+};
+const upload = multer.upload({ storage, limits, fileFilter });
+/**
+ * ROUTES HANDLER
+ */
 
 // Show campground route
 router.get("/", async (req, res) => {
