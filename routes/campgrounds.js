@@ -3,6 +3,8 @@ const NodeGeocoder = require("node-geocoder");
 const Fuse = require("fuse.js");
 const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
+const util = require("util");
+const fs = require("fs");
 require("dotenv").config();
 
 const Campground = require("../models/campground");
@@ -27,17 +29,23 @@ cloudinary.config({
 // Configuration for Multer
 const storage = multer.diskStorage({
   filename: (req, file, callback) =>
-    callback(null, `${file.originalname}-${Date.now()}.${file.mimetype}`)
+    callback(null, `${Date.now()}.${file.originalname}`),
+  destination: (req, file, callback) => {
+    callback(null, "./temp/");
+  }
 });
 const limits = { fileSize: 8 * 1024 * 1024 };
 const fileFilter = (req, file, callback) => {
-  if (file.mimetype === "png" || "jpeg" || "gif" || "jpg") {
+  const acceptedFiles = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
+  if (acceptedFiles.includes(file.mimetype)) {
     callback(null, true);
   } else {
     callback(new Error("Only image is allowed"), false);
   }
 };
-const upload = multer.upload({ storage, limits, fileFilter });
+const upload = multer({ storage, limits, fileFilter });
+const cloudUpload = util.promisify(cloudinary.uploader.upload);
+const unlink = util.promisify(fs.unlink);
 /**
  * ROUTES HANDLER
  */
@@ -72,17 +80,19 @@ router.get("/new", isSignedIn, (req, res) => {
   res.render("campgrounds/new");
 });
 // CREATE - Add new campground to database
-router.post("/", isSignedIn, async (req, res) => {
+router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
   try {
-    const { name, image, description, price, location } = req.body;
+    const { name, description, price, location } = req.body;
     const [{ latitude, longitude }] = await geocoder.geocode(location);
     const [{ formattedAddress }] = await geocoder.reverse({
       lat: latitude,
       lon: longitude
     });
+    const uploadResult = await cloudUpload(req.file.path);
+    await unlink(`./temp/${req.file.filename}`);
     await Campground.create({
       name,
-      image,
+      image: uploadResult.url,
       price,
       description,
       location: formattedAddress,

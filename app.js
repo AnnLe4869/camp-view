@@ -24,6 +24,7 @@ app.locals.moment = moment;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/temp"));
 app.use(flash());
 app.use(helmet());
 

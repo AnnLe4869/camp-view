@@ -2,6 +2,8 @@
     "cSpell.words": [
         "Cloudinary",
         "mimetype",
-        "originalname"
+        "originalname",
+        "promisify",
+        "uploader"
     ]
 }
