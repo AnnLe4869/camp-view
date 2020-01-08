@@ -9,7 +9,7 @@ const fs = require("fs");
 require("dotenv").config();
 
 const upload = require("../config/multer");
-const cloudUpload = require("../config/cloudinary");
+const { cloudUpload } = require("../config/cloudinary");
 const unlink = require("util").promisify(fs.unlink);
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
