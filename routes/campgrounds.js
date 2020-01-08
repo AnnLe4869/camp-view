@@ -5,12 +5,9 @@ const fs = require("fs");
 const Campground = require("../models/campground");
 const { isSignedIn, checkCampgroundOwnership } = require("../middleware/index");
 const upload = require("../config/multer");
-const cloudUpload = require("../config/cloudinary");
+const { cloudUpload, cloudDestroy } = require("../config/cloudinary");
 const geocoder = require("../config/google-map");
 const unlink = require("util").promisify(fs.unlink);
-/**
- * ROUTES HANDLER
- */
 
 // Show campground route
 router.get("/", async (req, res) => {
@@ -55,6 +52,7 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
     await Campground.create({
       name,
       image: uploadResult.url,
+      imageId: uploadResult.public_id,
       price,
       description,
       location: formattedAddress,
@@ -107,35 +105,46 @@ router.get("/:id/edit", checkCampgroundOwnership, async (req, res) => {
     res.redirect("back");
   }
 });
-router.put("/:id", checkCampgroundOwnership, async (req, res) => {
-  try {
-    const { name, image, description, price, location } = req.body;
-    const [{ latitude, longitude }] = await geocoder.geocode(location);
-    const [{ formattedAddress }] = await geocoder.reverse({
-      lat: latitude,
-      lon: longitude
-    });
-    await Campground.findByIdAndUpdate(req.params.id, {
-      name,
-      image,
-      price,
-      description,
-      location: formattedAddress,
-      latitude,
-      longitude
-    });
-    res.redirect(`/campgrounds/${req.params.id}`);
-  } catch (err) {
-    console.log(err);
-    req.flash("err", "You are trying to access a nonexistent campground");
-    res.redirect("/campgrounds");
+router.put(
+  "/:id",
+  checkCampgroundOwnership,
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const { name, description, price, location } = req.body;
+      const [{ latitude, longitude }] = await geocoder.geocode(location);
+      const [{ formattedAddress }] = await geocoder.reverse({
+        lat: latitude,
+        lon: longitude
+      });
+      const uploadResult = await cloudUpload(req.file.path);
+      await unlink(`./temp/${req.file.filename}`);
+
+      const campground = await Campground.findByIdAndUpdate(req.params.id, {
+        name,
+        image: uploadResult.url,
+        imageId: uploadResult.public_id,
+        price,
+        description,
+        location: formattedAddress,
+        latitude,
+        longitude
+      });
+      await cloudDestroy(campground.imageId);
+      res.redirect(`/campgrounds/${req.params.id}`);
+    } catch (err) {
+      console.log(err);
+      req.flash("err", "You are trying to access a nonexistent campground");
+      res.redirect("/campgrounds");
+    }
   }
-});
+);
 
 // REMOVE routes
 router.delete("/:id", checkCampgroundOwnership, (req, res) =>
   Campground.findByIdAndDelete(req.params.id)
-    .then(() => {
+    .then(async campground => {
+      await cloudDestroy(campground.imageId);
       req.flash("success", "You successfully delete a campground");
       res.redirect("/campgrounds");
     })

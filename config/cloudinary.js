@@ -10,5 +10,6 @@ cloudinary.config({
 });
 
 const cloudUpload = util.promisify(cloudinary.uploader.upload);
+const cloudDestroy = util.promisify(cloudinary.uploader.destroy);
 
-module.exports = cloudUpload;
+module.exports = { cloudUpload, cloudDestroy };

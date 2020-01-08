@@ -4,7 +4,14 @@ const sgMail = require("@sendgrid/mail");
 const User = require("../models/user");
 const Campground = require("../models/campground");
 const passport = require("passport");
+const fs = require("fs");
+
 require("dotenv").config();
+
+const upload = require("../config/multer");
+const cloudUpload = require("../config/cloudinary");
+const unlink = require("util").promisify(fs.unlink);
+
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Root route
@@ -14,22 +21,25 @@ router.get("/", (req, res) => {
 
 // Sign up routes
 router.get("/register", (req, res) => res.render("users/register"));
-router.post("/register", (req, res) => {
+router.post("/register", upload.single("avatar"), async (req, res) => {
   const {
     username,
     firstName,
     lastName,
-    avatar,
     email,
     adminCode,
     password
   } = req.body;
+  const uploadResult = await cloudUpload(req.file.path);
+  await unlink(`./temp/${req.file.filename}`);
+
   User.register(
     new User({
       username,
       firstName,
       lastName,
-      avatar,
+      avatar: uploadResult.url,
+      avatarId: uploadResult.public_id,
       email,
       isAdmin: adminCode === process.env.ADMIN_CODE
     }),

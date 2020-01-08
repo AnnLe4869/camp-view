@@ -3,7 +3,7 @@
   <div class="mw-100 container">
     <div class="row justify-content-center">
       <h1 class="text-center col-12">Sign up</h1>
-      <form action="/register" method="POST" class="col-xs-12 col-md-8 my-3">
+      <form action="/register" enctype="multipart/form-data" method="POST" class="col-xs-12 col-md-8 my-3">
         <div class="form-group">
           <label for="username">Username</label>
           <input
@@ -47,7 +47,7 @@
         <div class="form-group">
           <label for="avatar">Avatar</label>
           <input
-            type="text"
+            type="file"
             class="form-control"
             id="avatar"
             name="avatar"
