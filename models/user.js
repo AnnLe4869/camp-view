@@ -5,18 +5,22 @@ const userSchema = mongoose.Schema({
   username: { type: String, required: true },
   password: { type: String },
   email: { type: String, required: true },
-  subscriber: [
+  followers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     }
   ],
-  subscribeTo: [
+  following: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     }
   ],
+  notification: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Notification"
+  },
   avatar: String,
   avatarId: String,
   firstName: String,

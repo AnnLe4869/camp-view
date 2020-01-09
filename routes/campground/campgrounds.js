@@ -3,6 +3,7 @@ const Fuse = require("fuse.js");
 const fs = require("fs");
 
 const Campground = require("../../models/campground");
+const User = require("../../models/user");
 const {
   isSignedIn,
   checkCampgroundOwnership
@@ -50,9 +51,11 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
       lat: latitude,
       lon: longitude
     });
+
     const uploadResult = await cloudUpload(req.file.path);
     await unlink(`./temp/${req.file.filename}`);
-    await Campground.create({
+
+    const newCampground = await Campground.create({
       name,
       image: uploadResult.url,
       imageId: uploadResult.public_id,
@@ -63,6 +66,18 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
       longitude,
       author: { id: req.user._id, username: req.user.username }
     });
+
+    const { followers } = await User.findById(req.user._id).populate(
+      "followers"
+    );
+    for (const follower of followers) {
+      const { notification } = await User.findById(follower).populated(
+        "notification"
+      );
+      notification.campgrounds.push(newCampground);
+      await notification.save();
+    }
+
     req.flash("success", "You have created new campground");
     res.redirect("/campgrounds");
   } catch (err) {

@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 const notificationSchema = new mongoose.Schema({
-  newComment: [
+  comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment"
     }
   ],
-  newCampground: [
+  campgrounds: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Campground"
     }
   ],
-  newSubscriber: [
+  followers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
