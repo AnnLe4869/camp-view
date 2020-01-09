@@ -41,7 +41,8 @@
           >
             <button class="btn btn-danger">Remove</button>
           </form>
-          <% }else{ %>
+          <% } %>
+          <% if(user && campground.author.id.toString() !== user._id.toString()){ %>
             <p class="card-text">
               <form
               action="/<%= campground.author.id %>/subscribe"

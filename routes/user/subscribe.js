@@ -12,13 +12,14 @@ router.post("/:authorId/subscribe", isSignedIn, async (req, res) => {
       req.flash("error", `You can't subscribe to yourself`);
       return res.redirect(`back`);
     }
-    campAuthor.followers.push(user);
-    user.following.push(campAuthor);
+    campAuthor.followers.push(user._id);
+    user.following.push(campAuthor._id);
     await campAuthor.save();
     await user.save();
     req.flash("success", `You subscribed to ${campAuthor.username}`);
     res.redirect(`/users/${req.params.authorId}`);
   } catch (err) {
+    console.log(err);
     req.flash("error", "Something went wrong. Please try again");
     res.redirect("/campgrounds");
   }
