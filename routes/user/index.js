@@ -42,11 +42,13 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
       isAdmin: adminCode === process.env.ADMIN_CODE
     }),
     password,
-    (err, user) => {
+    async (err, user) => {
       if (err) {
         req.flash("error", err.message);
         return res.redirect("/register");
       }
+      newNotification.user = user._id;
+      await newNotification.save();
       passport.authenticate("local")(req, res, () => {
         req.flash("success", "Welcome to YelpCamp " + user.username);
         res.redirect("/campgrounds");
