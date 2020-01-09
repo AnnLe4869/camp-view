@@ -74,7 +74,7 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
       const { notification } = await User.findById(follower).populate(
         "notification"
       );
-      notification.campgrounds.push(newCampground);
+      notification.campgrounds.push(newCampground._id);
       await notification.save();
     }
 
