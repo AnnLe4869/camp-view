@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../../models/user");
 const Campground = require("../../models/campground");
-const Notification = require("../user/notifications");
+const Notification = require("../../models/notification");
 const passport = require("passport");
 const fs = require("fs");
 
@@ -29,7 +29,9 @@ router.post("/register", upload.single("avatar"), async (req, res) => {
   } = req.body;
   const uploadResult = await cloudUpload(req.file.path);
   await unlink(`./temp/${req.file.filename}`);
-  const newNotification = await Notification.create({});
+  const newNotification = await Notification.create({
+    lastReadAt: Date.now()
+  });
   User.register(
     new User({
       username,
@@ -100,5 +102,7 @@ router.get("/users/:id", async (req, res) => {
 router.use("/", require("./password-reset"));
 // Subscribe
 router.use("/", require("./subscribe"));
+// Notification
+router.use("/", require("./notifications"));
 
 module.exports = router;

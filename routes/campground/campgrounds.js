@@ -71,7 +71,7 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
       "followers"
     );
     for (const follower of followers) {
-      const { notification } = await User.findById(follower).populated(
+      const { notification } = await User.findById(follower).populate(
         "notification"
       );
       notification.campgrounds.push(newCampground);
