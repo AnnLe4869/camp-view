@@ -16,9 +16,9 @@ if (process.env.NODE_ENV) {
 }
 //const seedDB = require("./seed");
 const User = require("./models/user");
-const authRoute = require("./routes/index");
-const commentRoute = require("./routes/comments");
-const campgroundRoute = require("./routes/campgrounds");
+const authRoute = require("./routes/user/index");
+const commentRoute = require("./routes/comment/comments");
+const campgroundRoute = require("./routes/campground/campgrounds");
 app.set("view engine", "ejs");
 app.locals.moment = moment;
 

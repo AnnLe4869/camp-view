@@ -1,7 +1,7 @@
 const router = require("express").Router({ mergeParams: true });
-const Campground = require("../models/campground");
-const Comment = require("../models/comment");
-const { isSignedIn, checkCommentOwnership } = require("../middleware/index");
+const Campground = require("../../models/campground");
+const Comment = require("../../models/comment");
+const { isSignedIn, checkCommentOwnership } = require("../../middleware/index");
 
 // Create comment form
 router.get("/new", isSignedIn, (req, res) => {

@@ -2,11 +2,14 @@ const router = require("express").Router();
 const Fuse = require("fuse.js");
 const fs = require("fs");
 
-const Campground = require("../models/campground");
-const { isSignedIn, checkCampgroundOwnership } = require("../middleware/index");
-const upload = require("../config/multer");
-const { cloudUpload, cloudDestroy } = require("../config/cloudinary");
-const geocoder = require("../config/google-map");
+const Campground = require("../../models/campground");
+const {
+  isSignedIn,
+  checkCampgroundOwnership
+} = require("../../middleware/index");
+const upload = require("../../config/multer");
+const { cloudUpload, cloudDestroy } = require("../../config/cloudinary");
+const geocoder = require("../../config/google-map");
 const unlink = require("util").promisify(fs.unlink);
 
 // Show campground route

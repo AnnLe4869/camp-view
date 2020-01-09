@@ -26,6 +26,7 @@
               ><%= campground.author.username %></a
             >, <%= moment(campground.createdAt).fromNow() %>
           </p>
+          
           <% if(user && campground.author.id.toString() === user._id.toString()
           || user && user.isAdmin){ %>
           <a
@@ -40,6 +41,16 @@
           >
             <button class="btn btn-danger">Remove</button>
           </form>
+          <% }else{ %>
+            <p class="card-text">
+              <form
+              action="/<%= campground.author.id %>/subscribe"
+              method="POST"
+              class="d-inline"
+              >
+                <button class="btn btn-success">Subscribe</button>
+              </form>
+            </p>
           <% } %>
         </div>
         <ul
