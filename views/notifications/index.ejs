@@ -1,6 +1,3 @@
-<li
-  class="nav-item dropdown d-none d-sm-none d-xs-none d-md-block d-lg-inline-block"
->
   <a
     class="nav-link"
     href="#"
@@ -10,7 +7,10 @@
     aria-haspopup="true"
     aria-expanded="false"
   >
-    <i class="fa fa-bell" data-count="2"></i>
+    <i
+      class="fa fa-bell notification-icon"
+      data-count="<%= newMessages.length %>"
+    ></i>
   </a>
   <ul class="dropdown-menu" style="right: 0px; left: unset; width: 450px">
     <li class="text-light bg-dark">
@@ -21,48 +21,52 @@
         </div>
       </div>
     </li>
-    <li>
-      <div class="row">
-        <div class="col-lg-3 col-sm-3 col-3 text-center">
-          <img src="/demo/man-profile.jpg" class="w-50 rounded-circle" />
-        </div>
-        <div class="col-lg-8 col-sm-8 col-8">
-          <strong class="text-info">David John</strong>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur
+    <% newMessages.forEach(message => { %>
+      <li class="py-2">
+        <a class="row" href="<%= message.type === 'campground' ? '/campgrounds/' + message._id : '/campgrounds' %>">
+          <div class="col-lg-3 col-sm-3 col-3 text-center">
+            <img src="/demo/man-profile.jpg" class="w-50 rounded-circle" />
           </div>
-          <small class="text-warning">27.11.2015, 15:00</small>
-        </div>
-      </div>
-    </li>
-    <li class="bg-gray">
-      <div class="row">
-        <div class="col-lg-3 col-sm-3 col-3 text-center">
-          <img src="/demo/man-profile.jpg" class="w-50 rounded-circle" />
-        </div>
-        <div class="col-lg-8 col-sm-8 col-8">
-          <strong class="text-info">David John</strong>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur
+          <div class="col-lg-8 col-sm-8 col-8">
+            <div>
+              <strong class="text-info"><%= message.author.username %></strong>
+              <span>
+                <% if(message.type === 'campground'){ %>
+                  <%= 'has create a new campground' %>
+                <% }else { %>
+                  <%= 'has reply to your comment' %>
+                <% } %>
+              </span>            
+            </div>
+            <small class="text-warning"><%= moment(message.createdAt).fromNow() %></small>
           </div>
-          <small class="text-warning">27.11.2015, 15:00</small>
-        </div>
-      </div>
-    </li>
-    <li class="">
-      <div class="row">
-        <div class="col-lg-3 col-sm-3 col-3 text-center">
-          <img src="/demo/man-profile.jpg" class="w-50 rounded-circle" />
-        </div>
-        <div class="col-lg-8 col-sm-8 col-8">
-          <strong class="text-info">David John</strong>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur
+        </a>
+      </li>
+    <% }) %>
+
+    <% oldMessages.forEach(message => { %>
+      <li class="py-2">
+        <a class="row" href="<%= message.type === 'campground' ? '/campgrounds/' + message._id : '/campgrounds' %>">
+          <div class="col-lg-3 col-sm-3 col-3 text-center">
+            <img src="/demo/man-profile.jpg" class="w-50 rounded-circle" />
           </div>
-          <small class="text-warning">27.11.2015, 15:00</small>
-        </div>
-      </div>
-    </li>
+          <div class="col-lg-8 col-sm-8 col-8">
+            <div>
+              <strong class="text-info"><%= message.author.username %></strong>
+              <span>
+                <% if(message.type === 'campground'){ %>
+                  <%= 'has create a new campground' %>
+                <% }else { %>
+                  <%= 'has reply to your comment' %>
+                <% } %>
+              </span>            
+            </div>
+            <small class="text-warning"><%= moment(message.createdAt).fromNow() %></small>
+          </div>
+        </a>
+      </li>
+    <% }) %>
+    
     <li class="footer bg-dark text-center">
       <a href="" class="text-light">View All</a>
     </li>
