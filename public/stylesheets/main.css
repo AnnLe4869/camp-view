@@ -19,7 +19,7 @@
     width: 450px;
   }
 }
-.dropdown-menu a {
+.dropdown-menu li.py-2 a {
   text-decoration: none;
   color: inherit;
 }

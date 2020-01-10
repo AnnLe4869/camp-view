@@ -13,11 +13,11 @@
     ></i>
   </a>
   <ul class="dropdown-menu" >
-    <li class="text-light bg-dark">
+    <li>
       <div class="row">
         <div class="col-lg-12 col-sm-12 col-12">
           <span class="pl-1">Notifications</span>
-          <a href="" class="float-right text-light pr-1">Mark all as read</a>
+          <a href="" class="float-right pr-1">Mark all as read</a>
         </div>
       </div>
     </li>
@@ -45,7 +45,7 @@
     <% }) %>
 
     <% oldMessages.forEach(message => { %>
-      <li class="py-2">
+      <li class="py-2 bg-secondary">
         <a class="row" href="<%= message.type === 'campground' ? '/campgrounds/' + message._id : '/campgrounds' %>">
           <div class="col-lg-3 col-sm-3 col-3 text-center">
             <img src="/demo/man-profile.jpg" class="w-50 rounded-circle" />
@@ -67,8 +67,16 @@
       </li>
     <% }) %>
     
-    <li class="footer bg-dark text-center">
-      <a href="" class="text-light">View All</a>
+    <li class="text-center">
+      <a href="#">View All</a>
     </li>
   </ul>
 </li>
+<script>
+  document.getElementById("navbarDropdown").onclick = function() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', '/notification');
+    xhr.send();
+    return false;
+  }
+</script>
