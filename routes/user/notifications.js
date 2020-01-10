@@ -3,7 +3,7 @@ const Notification = require("../../models/notification");
 const User = require("../../models/user");
 const { isSignedIn } = require("../../middleware/index");
 
-router.get("/campgrounds/notification", isSignedIn, async (req, res) => {
+router.get("/notification", isSignedIn, async (req, res) => {
   try {
     const {
       comments: [comment, ...restComments],
@@ -71,8 +71,7 @@ router.get("/campgrounds/notification", isSignedIn, async (req, res) => {
         return returnCases.noNotification;
       }
     };
-    console.log(message(comment, campground));
-    res.render("notifications/index");
+    res.render("notifications/index", message(comment, campground));
   } catch (err) {
     console.log(err);
     req.flash("error", "Something went wrong. Please try again");
