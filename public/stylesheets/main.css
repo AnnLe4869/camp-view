@@ -1,67 +1,32 @@
-.notifications {
-  list-style: none;
-  padding: 0;
+@media (min-width: 768px) {
+  .dropdown-menu {
+    right: 100px;
+    left: unset;
+    width: 450px;
+  }
 }
-.notification {
-  display: block;
-  padding: 0.8em;
-  border: solid #e9ecef;
-  border-width: 0 0 1px;
-  background-color: #fff;
-  color: #212529;
+@media (min-width: 992px) {
+  .dropdown-menu {
+    right: 120px;
+    left: unset;
+    width: 450px;
+  }
+}
+@media (min-width: 1200px) {
+  .dropdown-menu {
+    right: 120px;
+    left: unset;
+    width: 450px;
+  }
+}
+.dropdown-menu a {
   text-decoration: none;
+  color: inherit;
 }
-.notification:last-child {
-  border-bottom: 0;
-  border-radius: 0 0 0.25rem 0.25rem;
+.dropdown-menu li.py-2:hover {
+  background-color: #f8f9fa;
 }
-.notification.active:hover,
-.notification:hover {
-  background-color: #f9f9f9;
-  border-color: #dee2e6;
-  text-decoration: none;
-}
-.notification.active {
-  background-color: #efefef;
-}
-.notification-title {
-  font-size: 1em;
-  margin-bottom: 0;
-}
-.notification-desc {
-  margin-bottom: 0;
-  font-size: 0.94em;
-}
-.notification-meta {
-  color: #868e96;
-}
-.dropdown-notifications > .dropdown-container,
-.dropdown-notifications > .dropdown-menu {
-  width: 450px;
-  max-width: 450px;
-}
-.dropdown-notifications > .dropdown-container {
-  margin-top: 0.6rem;
-}
-.dropdown-notifications .dropdown-menu {
-  padding: 0;
-}
-.dropdown-notifications .dropdown-footer,
-.dropdown-notifications .dropdown-toolbar {
-  padding: 0.8em;
-}
-.dropdown-notifications .dropdown-toolbar {
-  background: #fff;
-}
-.dropdown-notifications .dropdown-footer {
-  background: #ced4da;
-}
-.dropdown-notifications .dropdown-toggle:after {
-  display: none;
-}
-.navbar .dropdown-notifications .dropdown-menu {
-  position: static;
-}
+
 .notification-icon {
   margin-right: 0.49125rem;
   vertical-align: middle;
@@ -86,27 +51,5 @@
     Helvetica Neue, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji,
     Segoe UI Symbol;
 }
-.notification .media-body {
-  padding-top: 0;
-}
-.btn-lg .notification-icon:after {
-  margin-left: -0.5895rem;
-  margin-top: -0.5895rem;
-  min-width: 1.179rem;
-  height: 1.179rem;
-  line-height: 1.179rem;
-  font-size: 0.9825rem;
-}
-.btn-xs .notification-icon:after {
-  content: "";
-  margin-left: -0.29475rem;
-  margin-top: -0.14738rem;
-  min-width: 0.44659rem;
-  height: 0.44659rem;
-  line-height: 0.44659rem;
-  padding: 0;
-}
-.btn-xs .notification-icon {
-  margin-right: 0.24563rem;
-}
+
 /*# sourceMappingURL=bootstrap-notifications.css.map */
