@@ -23,20 +23,23 @@
               </a>
             <% }else{ %>
               <% const isUserAlreadyLiked = campground.likes.filter(likedUser => likedUser.equals(user._id)).length > 0 %>
-              <% if(isUserAlreadyLiked){ %>
-                <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
-                  <button class="btn btn-secondary" id="like" type="submit">
-                    <span><i class="fas fa-thumbs-up"></i> Unlike (<%= campground.likes.length %>)</span>
-                  </button>
-                </form>
+              <% const isUserCampgroundAuthor = campground.author.id.equals(user._id) %>
+              <% if(isUserCampgroundAuthor){ %>
+                  <div></div>
+              <%} else if(isUserAlreadyLiked){ %>
+                  <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
+                    <button class="btn btn-secondary" id="like" type="submit">
+                      <span><i class="fas fa-thumbs-up"></i> Unlike (<%= campground.likes.length %>)</span>
+                    </button>
+                  </form>
               <% } else { %>
-                <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
-                  <button class="btn btn-primary" id="like" type="submit">
-                    <span><i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)</span>
-                  </button>
-                </form>
-            <% }} %>
-            
+                  <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
+                    <button class="btn btn-primary" id="like" type="submit">
+                      <span><i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)</span>
+                    </button>
+                  </form>
+              <%} %>
+            <% } %>
           </h3>
             
           <p class="card-text"><%= campground.description %></p>
