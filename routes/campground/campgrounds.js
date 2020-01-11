@@ -172,4 +172,7 @@ router.delete("/:id", checkCampgroundOwnership, (req, res) =>
     })
 );
 
+// Like route
+router.use("/:id/like", require("./likes"));
+
 module.exports = router;

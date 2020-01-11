@@ -17,9 +17,11 @@
         <div class="card-body">
           <h3 class="card-title mb-4">
             <a href="#"><%= campground.name %></a>
-            <a class="btn btn-primary float-right mb-2" href="#">
-            <span><i class="fas fa-thumbs-up"></i> Like (2)</span>
-            </a>
+            <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
+              <button class="btn btn-primary " type="submit">
+                <span><i class="fas fa-thumbs-up"></i> Like (2)</span>
+              </button>
+            </form>
           </h3>
             
           <p class="card-text"><%= campground.description %></p>
