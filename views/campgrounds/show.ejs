@@ -17,11 +17,26 @@
         <div class="card-body">
           <h3 class="card-title mb-4">
             <a href="#"><%= campground.name %></a>
-            <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
-              <button class="btn btn-primary " type="submit">
-                <span><i class="fas fa-thumbs-up"></i> Like (2)</span>
-              </button>
-            </form>
+            <% if(!user){ %>
+              <a class="btn btn-primary float-right mb-2" id="like" type="submit" href="/login">
+                <span><i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)</span>
+              </a>
+            <% }else{ %>
+              <% const isUserAlreadyLiked = campground.likes.filter(likedUser => likedUser.equals(user._id)).length > 0 %>
+              <% if(isUserAlreadyLiked){ %>
+                <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
+                  <button class="btn btn-secondary" id="like" type="submit">
+                    <span><i class="fas fa-thumbs-up"></i> Unlike (<%= campground.likes.length %>)</span>
+                  </button>
+                </form>
+              <% } else { %>
+                <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
+                  <button class="btn btn-primary" id="like" type="submit">
+                    <span><i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)</span>
+                  </button>
+                </form>
+            <% }} %>
+            
           </h3>
             
           <p class="card-text"><%= campground.description %></p>
@@ -106,4 +121,5 @@
 </div>
 
 <%- include ('../script/map', {campground: campground}) %> 
+
 <%- include("../partials/footer") %>
