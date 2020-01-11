@@ -18,30 +18,52 @@
           <h3 class="card-title mb-4">
             <a href="#"><%= campground.name %></a>
             <% if(!user){ %>
-              <a class="btn btn-primary float-right mb-2" id="like" type="submit" href="/login">
-                <span><i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)</span>
-              </a>
-            <% }else{ %>
-              <% const isUserAlreadyLiked = campground.likes.filter(likedUser => likedUser.equals(user._id)).length > 0 %>
-              <% const isUserCampgroundAuthor = campground.author.id.equals(user._id) %>
-              <% if(isUserCampgroundAuthor){ %>
-                  <div></div>
-              <%} else if(isUserAlreadyLiked){ %>
-                  <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
-                    <button class="btn btn-secondary" id="like" type="submit">
-                      <span><i class="fas fa-thumbs-up"></i> Unlike (<%= campground.likes.length %>)</span>
-                    </button>
-                  </form>
-              <% } else { %>
-                  <form action="/campgrounds/<%= campground._id %>/like" method="POST" class="float-right mb-2">
-                    <button class="btn btn-primary" id="like" type="submit">
-                      <span><i class="fas fa-thumbs-up"></i> Like (<%= campground.likes.length %>)</span>
-                    </button>
-                  </form>
-              <%} %>
-            <% } %>
+            <a
+              class="btn btn-primary float-right mb-2"
+              id="like"
+              type="submit"
+              href="/login"
+            >
+              <span
+                ><i class="fas fa-thumbs-up"></i> Like (<%=
+                campground.likes.length %>)</span
+              >
+            </a>
+            <% }else{ %> <% const isUserAlreadyLiked =
+            campground.likes.filter(likedUser =>
+            likedUser.equals(user._id)).length > 0 %> <% const
+            isUserCampgroundAuthor = campground.author.id.equals(user._id) %> <%
+            if(isUserCampgroundAuthor){ %>
+            <div></div>
+            <%} else if(isUserAlreadyLiked){ %>
+            <form
+              action="/campgrounds/<%= campground._id %>/like"
+              method="POST"
+              class="float-right mb-2"
+            >
+              <button class="btn btn-secondary" id="like" type="submit">
+                <span
+                  ><i class="fas fa-thumbs-up"></i> Unlike (<%=
+                  campground.likes.length %>)</span
+                >
+              </button>
+            </form>
+            <% } else { %>
+            <form
+              action="/campgrounds/<%= campground._id %>/like"
+              method="POST"
+              class="float-right mb-2"
+            >
+              <button class="btn btn-primary" id="like" type="submit">
+                <span
+                  ><i class="fas fa-thumbs-up"></i> Like (<%=
+                  campground.likes.length %>)</span
+                >
+              </button>
+            </form>
+            <%} %> <% } %>
           </h3>
-            
+
           <p class="card-text"><%= campground.description %></p>
           <p class="card-text font-weight-bold font-italic">
             Submitted by
@@ -49,7 +71,7 @@
               ><%= campground.author.username %></a
             >, <%= moment(campground.createdAt).fromNow() %>
           </p>
-          
+
           <% if(user && campground.author.id.toString() === user._id.toString()
           || user && user.isAdmin){ %>
           <a
@@ -64,30 +86,57 @@
           >
             <button class="btn btn-danger">Remove</button>
           </form>
-          <% } %>
-          <% if(user && campground.author.id.toString() !== user._id.toString()){ %>
-            <p class="card-text">
-              <form
+          <% } %> <% if(user && campground.author.id.toString() !==
+          user._id.toString()){ %>
+          <div class="card-text">
+            <form
               action="/<%= campground.author.id %>/subscribe"
               method="POST"
               class="d-inline"
-              >
-                <button class="btn btn-success">Subscribe</button>
-              </form>
-            </p>
+            >
+              <button class="btn btn-success">Subscribe</button>
+            </form>
+          </div>
           <% } %>
         </div>
         <ul
           class="list-group list-group-flush pt-3"
-          style="background-color: lightgrey"
+          style="background-color: rgb(238, 232, 232)"
         >
-          <a
-            href="/campgrounds/<%= campground._id %>/comments/new"
-            class="btn btn-success ml-auto mb-3 mr-3"
-            >Add new comment</a
-          >
+          <div class="d-flex">
+            <h4 class="float-right ml-3">Comment</h4>
+            <a
+              class="btn btn-success ml-auto mb-3 mr-3"
+              data-toggle="collapse"
+              href="#collapseComment"
+              role="button"
+              aria-expanded="false"
+              aria-controls="collapseComment"
+              >Add new comment</a
+            >
+          </div>
+          <div id="collapseComment" class="collapse">
+            <div class="container">
+              <div class="container">
+                <form action="">
+                  <input type="text" class="form-control" />
+                  <textarea
+                    name=""
+                    id=""
+                    cols="30"
+                    rows="10"
+                    class="form-control"
+                  ></textarea>
+                </form>
+              </div>
+            </div>
+          </div>
+
           <% campground.comments.forEach(comment => { %>
-          <li class="list-group-item" style="background-color: lightgrey;">
+          <li
+            class="list-group-item"
+            style="background-color: rgb(238, 232, 232);"
+          >
             <div>
               <strong class="d-inline-block"
                 ><%= comment.author.username %></strong
@@ -121,8 +170,6 @@
       </div>
     </div>
   </div>
+  <%- include ('../script/map', {campground: campground}) %> <%-
+  include("../partials/footer") %>
 </div>
-
-<%- include ('../script/map', {campground: campground}) %> 
-
-<%- include("../partials/footer") %>
