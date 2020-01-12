@@ -24,11 +24,15 @@ router.get("/", async (req, res) => {
       shouldSort: true,
       threshold: 0.6,
       location: 0,
-      distance: 10,
+      distance: 20,
       maxPatternLength: 32,
       keys: ["name", "description", "location", "author.username"]
     };
     const fuse = new Fuse(campgrounds, searchOption);
+    const searchKeyword =
+      /^\s*$/.test(req.query.search) || !req.query.search
+        ? ""
+        : req.query.search;
     const matchedCampgrounds =
       /^\s*$/.test(req.query.search) || !req.query.search
         ? campgrounds
@@ -39,6 +43,7 @@ router.get("/", async (req, res) => {
         postsPerPage * pageNumber - postsPerPage,
         postsPerPage * pageNumber
       ),
+      searchKeyword,
       currentPageNumber: pageNumber,
       totalNumberOfPages: Math.ceil(matchedCampgrounds.length / postsPerPage)
     });
