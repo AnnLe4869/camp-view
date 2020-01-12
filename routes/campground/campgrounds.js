@@ -67,24 +67,19 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
       author: { id: req.user._id, username: req.user.username }
     });
 
+    req.flash("success", "You have created new campground");
+    res.redirect("/campgrounds");
+
     const { followers } = await User.findById(req.user._id).populate(
       "followers"
     );
-
-    req.flash("success", "You have created new campground");
-    res.redirect("/campgrounds");
-    console.log("this one should run first");
-
-    (async () => {
-      console.log("this one should run after");
-      for (const follower of followers) {
-        const { notification } = await User.findById(follower).populate(
-          "notification"
-        );
-        notification.campgrounds.push(newCampground._id);
-        await notification.save();
-      }
-    })();
+    for (const follower of followers) {
+      const { notification } = await User.findById(follower).populate(
+        "notification"
+      );
+      notification.campgrounds.push(newCampground._id);
+      await notification.save();
+    }
   } catch (err) {
     console.log(err);
     req.flash("error", "Something went wrong. Please try again");
