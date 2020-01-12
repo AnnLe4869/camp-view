@@ -104,34 +104,59 @@
           style="background-color: rgb(238, 232, 232)"
         >
           <div class="d-flex">
-            <h4 class="float-right ml-3">Comment</h4>
+            <h4 class="float-right ml-3">
+              Comment <i class="fas fa-comment"></i>
+            </h4>
             <a
               class="btn btn-success ml-auto mb-3 mr-3"
-              data-toggle="collapse"
-              href="#collapseComment"
-              role="button"
-              aria-expanded="false"
-              aria-controls="collapseComment"
-              >Add new comment</a
+              <% if(user){ %>
+                data-toggle="collapse"
+                href="#collapseComment" 
+                role="button"
+                aria-expanded="false"
+                aria-controls="collapseComment"
+              <% }else{  %>
+                href="/login"
+              <% } %>
             >
+              <i class="fas fa-plus"></i> Add new comment
+            </a>
           </div>
           <div id="collapseComment" class="collapse">
             <div class="container">
-              <div class="container">
-                <form action="">
-                  <input type="text" class="form-control" />
+              <div
+                class="container pl-4 mb-5"
+                style="border-left: 5px solid #00C851;"
+              >
+                <h5>Write your comment <i class="fas fa-pen"></i></h5>
+                <form
+                  action="/campgrounds/<%= campground._id %>/comments"
+                  method="POST"
+                >
+                  <input
+                    type="text"
+                    class="form-control mb-3"
+                    placeholder="<%= campground.author.username %>"
+                    readonly
+                  />
                   <textarea
-                    name=""
-                    id=""
-                    cols="30"
-                    rows="10"
+                    name="comment[text]"
+                    placeholder="Writing new comment ..."
                     class="form-control"
+                    cols="30"
+                    rows="5"
                   ></textarea>
+                  <button type="submit" class="btn btn-success my-3">
+                    Comment
+                  </button>
                 </form>
               </div>
             </div>
           </div>
 
+          <% if (campground.comments.length === 0) { %>
+              <div class="ml-3 mb-3" style="color: grey;">No comments yet.</div>
+            <% } %>
           <% campground.comments.forEach(comment => { %>
           <li
             class="list-group-item"
