@@ -16,7 +16,10 @@ const unlink = require("util").promisify(fs.unlink);
 // Show campground route
 router.get("/", async (req, res) => {
   try {
+    const postsPerPage = 9;
+    const pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
     const campgrounds = await Campground.find({});
+
     const searchOption = {
       shouldSort: true,
       threshold: 0.6,
@@ -26,13 +29,21 @@ router.get("/", async (req, res) => {
       keys: ["name", "description", "location", "author.username"]
     };
     const fuse = new Fuse(campgrounds, searchOption);
+    const matchedCampgrounds =
+      /^\s*$/.test(req.query.search) || !req.query.search
+        ? campgrounds
+        : fuse.search(req.query.search);
+
     res.render("campgrounds/index", {
-      campGrounds:
-        /^\s*$/.test(req.query.search) || !req.query.search
-          ? campgrounds
-          : fuse.search(req.query.search)
+      campGrounds: matchedCampgrounds.slice(
+        postsPerPage * pageNumber - postsPerPage,
+        postsPerPage * pageNumber
+      ),
+      currentPageNumber: pageNumber,
+      totalNumberOfPages: Math.ceil(matchedCampgrounds.length / postsPerPage)
     });
   } catch (err) {
+    console.error(err);
     req.flash("error", "Something went wrong. Please try again");
     res.redirect("/");
   }

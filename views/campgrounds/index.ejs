@@ -34,22 +34,63 @@
     </div>
     <% }) %>
   </div>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true"
-          >Previous</a
-        >
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
+  <nav aria-label="Page navigation">
+    <% if (totalNumberOfPages && totalNumberOfPages > 0) { %>
+      <ul class="pagination justify-content-center">
+        <% if (currentPageNumber == 1) { %>
+          <li class="page-item disabled"><a class="page-link">First</a></li>
+        <% } else { %>
+          <li><a class="page-link" href="/campgrounds">First</a></li>
+        <% } %> 
+        <% if (currentPageNumber == 1) { %>
+          <li class="page-item disabled"><a class="page-link">«</a></li>
+        <% } else { %>
+          <li>
+            <a
+              class="page-link"
+              href="/campgrounds?page=<%= Number(currentPageNumber) - 1 %>"
+              >«</a
+            >
+          </li>
+        <% } %> 
+        <% var i = (Number(currentPageNumber) > 5 ? Number(currentPageNumber) - 4 : 1) %> 
+        <% if (i !== 1) { %>
+          <li class="page-item disabled"><a class="page-link">...</a></li>
+        <% } %> 
+        <% for (; i <= (Number(currentPageNumber) + 4) && i <= totalNumberOfPages; i++) { %> 
+          <% if (i == currentPageNumber) { %>
+            <li class="active"><a class="page-link"><%= i %></a></li>
+          <% } else { %>
+            <li>
+              <a class="page-link" href="/campgrounds?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %> 
+          <% if (i == Number(currentPageNumber) + 4 && i < totalNumberOfPages) { %>
+            <li class="page-item disabled"><a class="page-link">...</a></li>
+          <% } %> 
+        <% } %> 
+        <% if (currentPageNumber == totalNumberOfPages) { %>
+          <li class="page-item disabled"><a class="page-link">»</a></li>
+        <% } else { %>
+          <li>
+            <a
+              class="page-link"
+              href="/campgrounds?page=<%= Number(currentPageNumber) + 1 %>"
+              >»</a
+            >
+          </li>
+        <% } %> 
+        <% if (currentPageNumber == totalNumberOfPages) { %>
+          <li class="page-item disabled"><a class="page-link">Last</a></li>
+        <% } else { %>
+          <li>
+            <a class="page-link" href="/campgrounds?page=<%= totalNumberOfPages %>"
+              >Last</a
+            >
+          </li>
+        <% } %>
+      </ul>
+    <% } %>
   </nav>
 </div>
 
