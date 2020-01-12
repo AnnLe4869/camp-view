@@ -20,15 +20,7 @@ router.get("/", async (req, res) => {
     const pageNumber = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
     const campgrounds = await Campground.find({});
 
-    const searchOption = {
-      shouldSort: true,
-      threshold: 0.6,
-      location: 0,
-      distance: 20,
-      maxPatternLength: 32,
-      keys: ["name", "description", "location", "author.username"]
-    };
-    const fuse = new Fuse(campgrounds, searchOption);
+    const fuse = new Fuse(campgrounds, require("../../config/search"));
     const searchKeyword =
       /^\s*$/.test(req.query.search) || !req.query.search
         ? ""
