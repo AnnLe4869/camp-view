@@ -40,10 +40,13 @@ const campgroundSchema = new mongoose.Schema({
   ]
 });
 
-campgroundSchema.pre("save", async next => {
+campgroundSchema.pre("save", async function(next) {
   try {
     if (this.isNew || this.isModified("image")) {
-      const scaledImageTempPath = await createScaledImage(this.image);
+      const scaledImageTempPath = await createScaledImage(
+        this.image,
+        this.imageId
+      );
       const scaledImageUploadResult = await cloudUpload(scaledImageTempPath);
       this.scaledImage = scaledImageUploadResult.url;
       this.scaledImageId = scaledImageUploadResult.public_id;

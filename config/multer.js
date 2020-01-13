@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     callback(null, "./temp/");
   }
 });
-const limits = { fileSize: 8 * 1024 * 1024 };
+const limits = { fileSize: 10 * 1024 * 1024 };
 const fileFilter = (req, file, callback) => {
   const acceptedFiles = ["image/jpeg", "image/png", "image/jpg", "image/gif"];
   if (acceptedFiles.includes(file.mimetype)) {
