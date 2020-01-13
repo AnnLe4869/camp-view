@@ -59,6 +59,7 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
       lat: latitude,
       lon: longitude
     });
+    console.log(req.file.path);
 
     const uploadResult = await cloudUpload(req.file.path);
     await unlink(`./temp/${req.file.filename}`);
@@ -158,8 +159,10 @@ router.put(
         latitude,
         longitude
       });
-      await cloudDestroy(campground.imageId);
       res.redirect(`/campgrounds/${req.params.id}`);
+
+      await cloudDestroy(campground.imageId);
+      await cloudDestroy(campground.scaledImageId);
     } catch (err) {
       console.log(err);
       req.flash("err", "You are trying to access a nonexistent campground");
@@ -173,6 +176,7 @@ router.delete("/:id", checkCampgroundOwnership, (req, res) =>
   Campground.findByIdAndDelete(req.params.id)
     .then(async campground => {
       await cloudDestroy(campground.imageId);
+      await cloudDestroy(campground.scaledImageId);
       req.flash("success", "You successfully delete a campground");
       res.redirect("/campgrounds");
     })
