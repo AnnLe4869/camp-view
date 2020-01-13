@@ -10,7 +10,7 @@
   </header>
 
   <div class="row">
-    <% campGrounds.forEach(({_id, name, image, views}) => { %>
+    <% campGrounds.forEach(({_id, name, image, views, comments}) => { %>
     <div class="col-lg-4 col-md-6 col-sm-12 my-2">
       <div class="card">
         <img class="card-img-top" src= <%= image %> alt= <%= name %>>
@@ -19,6 +19,8 @@
           <a class="btn float-left" href="#">
             <span><i class="far fa-eye"></i></span>
             <span><%= views.length %></span>
+            <span><i class="far fa-comment"></i></span>
+            <span><%= comments.length %></span>
           </a>
           <a class="btn btn-info float-right" href="/campgrounds/<%= _id %>"
             >More info</a
