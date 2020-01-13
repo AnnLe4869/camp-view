@@ -8,6 +8,7 @@ const campgroundSchema = new mongoose.Schema({
   location: String,
   longitude: Number,
   latitude: Number,
+  views: [{ type: Date }],
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,

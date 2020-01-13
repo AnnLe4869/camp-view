@@ -99,13 +99,15 @@ router.post("/", isSignedIn, upload.single("image"), async (req, res) => {
 router.get("/:id", (req, res) => {
   Campground.findById(req.params.id)
     .populate("comments")
-    .then(foundCampground => {
+    .then(async foundCampground => {
       if (!foundCampground) {
         throw new Error();
       }
       res.render("campgrounds/show", {
         campground: foundCampground
       });
+      foundCampground.views.push(Date.now());
+      await foundCampground.save();
     })
     .catch(err => {
       console.error(err);
