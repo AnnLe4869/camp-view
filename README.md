@@ -16,7 +16,19 @@ _Link for the workable version of the app_
    In detail form, it show more info about the campground, the cost for one day going there, who create this campground, the description about the campground, and space for comment
 7. The comment show who wrote it, the comment content, and when was it created
 
+**UPDATE**: Additional features are added
+
+1. User can request for a new password if he/she forgot their old password
+2. User can subscribe for a specific author to receive a notification if the author create new campground
+3. The comment is now on the page, without needing to go to another page
+4. User can like/unlike a campground
+5. User now can see the Google Map location of the campground they are reading
+6. User can see how much like an view a campground has from the display page
+7. Pagination is added
+8. User now can search for the campground they want
+
 **Plan for improvement**:
 
 1. Add more requirement for password. Right now the password can be anything, and so will become a hugh security risk when the password is too easy to guess
-2. The comment post date is hard-code. Need to improved
+2. Implement AJAX call for comment section, subscribe section, like section and pagination section so that user can stay on the page and not being redirected
+3. Implement email verification for the register process
